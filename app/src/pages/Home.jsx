@@ -14,6 +14,20 @@ const Home = () => {
     { id: 3, value: "12", suffix: "+", label: "Tech Stack Items" },
     { id: 4, value: "∞", suffix: "", label: "Lines Ahead" },
   ];
+  const TECH_STACK = [
+    {
+      id: 1,
+      title: "FRONTEND",
+      stack: ["HTML", "CSS", "JavaScript", "React", "Tailwind CSS", "ShadCN"],
+    },
+    { id: 2, title: "BACKEND", stack: ["Node.js", "Express.js", "MongoDB"] },
+    { id: 3, title: "LANGUAGES", stack: ["Java", "C++", "Python"] },
+    {
+      id: 4,
+      title: "DEVOPS & TOOLS",
+      stack: ["Git", "GitHub", "Linux", "Cloudfare Pages", "Render"],
+    },
+  ];
 
   const PROJECTS = [
     {
@@ -312,6 +326,47 @@ const Home = () => {
                   </div>
                 </div>
               </>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tech Stack */}
+      <section
+        id="skills"
+        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-black bg-white text-black" : "border-white bg-black text-white"}`}
+      >
+        <div className="flex flex-col gap-4 w-full">
+          <h1 className="jetbrains-mono-font">§ 003</h1>
+          <div className="flex justify-between w-full mb-10">
+            <div className="flex flex-col tracking-wider">
+              <h1 className="text-7xl playfair-font font-black">Tech</h1>
+              <h1 className="text-7xl playfair-font-italic font-black">
+                Stack.
+              </h1>
+            </div>
+          </div>
+          <div
+            className={`grid grid-cols-4 border-t-2 ${dm ? "border-black/50" : "border-white/50"}`}
+          >
+            {TECH_STACK.map((stack, i) => (
+              <div
+                key={stack.id}
+                className={`flex flex-col gap-3 py-10 px-10 ${i !== STATS.length - 1 ? `border-r-2 ${dm ? "border-black/50" : "border-white/50"}` : ""}`}
+              >
+                <p className="text-lg text-neutral-600 jetbrains-mono-font font-bold">
+                  {stack.title}
+                </p>
+                <ul className="flex flex-col gap-5 list-disc px-6">
+                  {stack.stack.map((item) => (
+                    <>
+                      <li className="playfair-font font-bold text-xl">
+                        {item}
+                      </li>
+                    </>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
         </div>
