@@ -3,6 +3,9 @@ import { ViewContext } from "../context/ViewContext";
 import { Sun, Moon, MoveRight } from "lucide-react";
 
 const Home = () => {
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
   const { darkMode, setDarkMode } = useContext(ViewContext);
   const Nav_Links = ["ABOUT", "PROJECTS", "SKILLS", "CONTACT"];
   const STATS = [
@@ -12,14 +15,37 @@ const Home = () => {
     { id: 4, value: "∞", suffix: "", label: "Lines Ahead" },
   ];
 
+  const PROJECTS = [
+    {
+      id: 1,
+      title: "Team Griffin India — Website",
+      domain: "Full Stack - Web Dev",
+      desc: "Designed and developed the complete web presence for Team Griffin India, a competitive engineering team at VIT Pune. Built a responsive, performance-first site showcasing the team's achievements, members, and technical excellence.",
+      stack: ["REACT", "TAILWIND CSS", "RESPONSIVE", "NODEJS", "EXPRESSJS"],
+      year: 2025,
+      visit: "https://teamgriffin.codewithpratham.me",
+    },
+    {
+      id: 2,
+      title: "IndRail — Railway Information Portal",
+      domain: "Full Stack - Web Dev",
+      desc: "A comprehensive railway information platform providing real-time train data, route maps, and schedule queries. Built with a full-stack architecture prioritising speed and usability for Indian Railways passengers.",
+      stack: ["REACT", "TAILWIND CSS", "MONGODB", "SHADCN", "EXPRESSJS"],
+      year: 2025,
+      visit: "https://indrail.codewithpratham.me",
+    },
+  ];
+
   const scrollTo = (id) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
 
   const dm = darkMode;
 
   return (
     <div
-      className={`min-h-screen ${dm ? "bg-black text-white" : "bg-white text-black"} transition-colors duration-500`}
+      className={`min-h-screen ${dm ? "bg-black text-white" : "bg-white text-black"} transition-colors duration-500 unselectable-text`}
     >
       {/* Navbar */}
       <nav
@@ -169,27 +195,124 @@ const Home = () => {
             problems, and I obsess over clean architecture and purposeful
             design.
           </p>
-          <p className={`source-serif-font text-xl font-semibold leading-9 ${darkMode ? 'text-neutral-500' : 'text-neutral-600'} mb-9`}>
+          <p
+            className={`source-serif-font text-xl font-semibold leading-9 ${darkMode ? "text-neutral-500" : "text-neutral-600"} mb-9`}
+          >
             From crafting team websites to architecting full-stack railway
             platforms, I engage with every layer of the stack — frontend
             aesthetics, backend logic, database design, and deployment
             pipelines. I believe engineering is not just about making things
-            work, but making them work <span className={`${darkMode ? 'text-white' : 'text-black'} playfair-font-italic font-semibold`}>beautifully.</span>
+            work, but making them work{" "}
+            <span
+              className={`${darkMode ? "text-white" : "text-black"} playfair-font-italic font-semibold`}
+            >
+              beautifully.
+            </span>
           </p>
           <div className="w-full h-0.5 bg-neutral-600"></div>
           <div className="mt-8 flex gap-8">
             <div className="flex flex-col gap-1">
               <h1 className="jetbrains-mono-font text-neutral-600">LOCATION</h1>
-              <h1 className="source-serif-font font-semibold">Pune, Maharashtra</h1>
+              <h1 className="source-serif-font font-semibold">
+                Pune, Maharashtra
+              </h1>
             </div>
             <div className="flex flex-col gap-1">
-              <h1 className="jetbrains-mono-font text-neutral-600">INSTITUTION</h1>
-              <h1 className="source-serif-font font-semibold">Vishwakarma Institute of Technology</h1>
+              <h1 className="jetbrains-mono-font text-neutral-600">
+                INSTITUTION
+              </h1>
+              <h1 className="source-serif-font font-semibold">
+                Vishwakarma Institute of Technology
+              </h1>
             </div>
             <div className="flex flex-col gap-1">
               <h1 className="jetbrains-mono-font text-neutral-600">BATCH</h1>
               <h1 className="source-serif-font font-semibold">2025 - 2029</h1>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section
+        id="projects"
+        className={`h-auto w-full pb-25 pt-20 px-50 flex flex-col items-start border-b-8 ${darkMode ? "border-white" : "border-black"}`}
+      >
+        <div className="flex flex-col gap-4 w-full">
+          <h1 className="jetbrains-mono-font">§ 002</h1>
+          <div className="flex justify-between w-full mb-10">
+            <div className="flex flex-col tracking-wider">
+              <h1 className="text-5xl playfair-font font-black">Selected</h1>
+              <h1 className="text-5xl playfair-font-italic font-black">
+                Projects.
+              </h1>
+            </div>
+            <div className="flex flex-col justify-end">
+              <h1 className="text-sm text-neutral-500 jetbrains-mono-font">
+                02 Projects
+              </h1>
+              <h1 className="text-sm text-neutral-500 jetbrains-mono-font">
+                2025
+              </h1>
+            </div>
+          </div>
+          <div
+            className={`flex flex-col divide-y border-t border-b ${darkMode ? "divide-neutral-400 border-neutral-400" : "divide-neutral-600 border-neutral-600"} cursor-pointer`}
+          >
+            {PROJECTS.map((project, i) => (
+              <>
+                <div
+                  key={i}
+                  className={`grid grid-cols-[80px_1fr] gap-6 py-10 px-8 items-center group ${darkMode ? "hover:bg-white hover:text-black" : "hover:bg-black hover:text-white"}  transition-colors duration-500`}
+                >
+                  <span
+                    className={`text-6xl font-black playfair-font select-none ${darkMode ? "text-neutral-600" : "text-neutral-700"}`}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-start justify-between">
+                      <h1 className="text-3xl font-bold playfair-font">
+                        {project.title}
+                      </h1>
+                      <span
+                        className={`border source-serif-font ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} text-xs px-3 py-1 tracking-widest mr-3 transition-colors duration-500`}
+                      >
+                        {project.domain}
+                      </span>
+                    </div>
+                    <p
+                      className={`text-lg source-serif-font font-bold ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} leading-relaxed max-w-2xl`}
+                    >
+                      {project.desc}
+                    </p>
+                    <hr className="border-neutral-700" />
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-3 flex-wrap">
+                        {project.stack.map((item) => (
+                          <span
+                            key={item}
+                            className={`border source-serif-font ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} text-xs px-3 py-1 tracking-widest transition-colors duration-500`}
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="text-sm jetbrains-mono-font text-neutral-400 mr-3">
+                        {project.year}
+                      </span>
+                      <button
+                        className={`text-xs border px-3 py-1  ${darkMode ? "border-white group-hover:border-black" : "border-black group-hover:border-white"} transition-colors duration-500 tracking-widest source-serif-font mr-3 cursor-pointer`}
+                        onClick={() => openInNewTab(project.visit)}
+                      >
+                        VISIT
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ))}
           </div>
         </div>
       </section>

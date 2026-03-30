@@ -138,6 +138,20 @@
   .jetbrains-mono-font {
     font-family: "JetBrains Mono", monospace;
   }
+  .texture-diagonal::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      var(--fg) 40px,
+      var(--fg) 42px
+    );
+    opacity: 0.025;
+  }
 }
 
 @layer base {
