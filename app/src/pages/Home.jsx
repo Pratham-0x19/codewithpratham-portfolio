@@ -130,7 +130,7 @@ const Home = () => {
       >
         <h1
           className="text-3xl font-black playfair-font tracking-tight cursor-pointer"
-          onClick={() => scrollTo("home")}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           MP.
         </h1>
@@ -621,6 +621,28 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <footer
+        className={`relative h-auto w-full py-5 px-18 flex justify-between items-center`}
+      >
+        <h1
+          className="text-2xl playfair-font font-black leading-none cursor-pointer"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          Mangnale Prathamesh.
+        </h1>
+        <p
+          className={`absolute left-1/2 -translate-x-1/2 text-sm jetbrains-mono-font tracking-widest font-bold leading-none ${darkMode ? "text-neutral-500" : "text-neutral-700"} cursor-pointer`}
+        >
+          BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2028
+        </p>
+        <p className="text-sm jetbrains-mono-font tracking-widest font-bold leading-none cursor-pointer">
+          <span onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            codewithpratham.me
+          </span>{" "}
+          © 2026 — All rights reserved
+        </p>
+      </footer>
     </div>
   );
 };
