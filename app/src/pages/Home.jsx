@@ -1,8 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ViewContext } from "../context/ViewContext";
 import { Sun, Moon, MoveRight } from "lucide-react";
+import emailjs from "@emailjs/browser";
 
 const Home = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState("idle");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setStatus("idle")
+    },2500)
+
+    return () => clearTimeout(timer)
+  },[status])
+
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
@@ -119,6 +136,40 @@ const Home = () => {
       ?.scrollIntoView({ behavior: "smooth", block: "center" });
 
   const dm = darkMode;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const handleSend = async () => {
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus("error");
+      return;
+    }
+    if (!emailRegex.test(formData.email)) {
+      setStatus("invalid_email");
+      return;
+    }
+
+    setStatus("sending");
+
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          title: "Portfolio Contact",
+          time: new Date().toLocaleString(),
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+      );
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (err) {
+      setStatus("failed");
+    }
+  };
 
   return (
     <div
@@ -574,6 +625,7 @@ const Home = () => {
               >
                 SEND A MESSAGE
               </h1>
+
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -581,11 +633,21 @@ const Home = () => {
                   YOUR NAME
                 </h1>
                 <input
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   type="text"
                   className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
-                  placeholder="Adtiya Singh"
+                  placeholder="Aditya Singh"
                 />
+                {status === "error" && !formData.name && (
+                  <p className="jetbrains-mono-font text-xs text-red-500 font-bold tracking-wider">
+                    ✕ NAME IS REQUIRED
+                  </p>
+                )}
               </div>
+
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -593,29 +655,71 @@ const Home = () => {
                   YOUR EMAIL
                 </h1>
                 <input
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   type="text"
                   className={`border-2 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
                   placeholder="aditya@example.com"
                 />
+                {status === "error" && !formData.email && (
+                  <p className="jetbrains-mono-font text-xs text-red-500 font-bold tracking-wider">
+                    ✕ EMAIL IS REQUIRED
+                  </p>
+                )}
+                {status === "invalid_email" && formData.email && (
+                  <p className="jetbrains-mono-font text-xs text-red-500 font-bold tracking-wider">
+                    ✕ INVALID EMAIL ADDRESS
+                  </p>
+                )}
               </div>
+
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
                 >
-                  YOUR EMAIL
+                  MESSAGE
                 </h1>
                 <textarea
-                  type="text"
+                  value={formData.message}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                   className={`border-2 h-30 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none`}
                   placeholder="Tell me what you have in mind ..."
                 />
+                {status === "error" && !formData.message && (
+                  <p className="jetbrains-mono-font text-xs text-red-500 font-bold tracking-wider">
+                    ✕ MESSAGE IS REQUIRED
+                  </p>
+                )}
               </div>
+
+              {/* Global success / failed banner */}
+              {status === "success" && (
+                <div className={`border-2 border-green-500 px-4 py-3`}>
+                  <p className="jetbrains-mono-font text-xs text-green-500 font-bold tracking-wider">
+                    ✓ MESSAGE SENT SUCCESSFULLY
+                  </p>
+                </div>
+              )}
+              {status === "failed" && (
+                <div className="border-2 border-red-500 px-4 py-3">
+                  <p className="jetbrains-mono-font text-xs text-red-500 font-bold tracking-wider">
+                    ✕ SOMETHING WENT WRONG — TRY AGAIN
+                  </p>
+                </div>
+              )}
+
               <button
-                onClick={() => scrollTo("contact")}
+                onClick={handleSend}
+                disabled={status === "sending"}
                 className={`w-[30%] px-5 py-4 text-sm jetbrains-mono-font border-2 flex items-center justify-center gap-3 transition-colors duration-400 cursor-pointer
-              ${dm ? "bg-black text-white hover:bg-white hover:text-black border-black" : "bg-white text-black hover:bg-black hover:text-white"}`}
+        ${darkMode ? "bg-black text-white hover:bg-white hover:text-black border-black" : "bg-white text-black hover:bg-black hover:text-white border-white"}
+        ${status === "sending" ? "opacity-50 cursor-not-allowed" : ""}`}
               >
-                SEND MESSAGE
+                {status === "sending" ? "SENDING..." : "SEND MESSAGE →"}
               </button>
             </div>
           </div>
