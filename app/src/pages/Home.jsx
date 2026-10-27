@@ -26,9 +26,27 @@ const Home = () => {
   };
   const { darkMode, setDarkMode } = useContext(ViewContext);
   const Nav_Links = ["ABOUT", "PROJECTS", "SKILLS", "CONTACT"];
+  const currYear = new Date().getFullYear();
+  const studyYear = 4 - (2029 - currYear) + 1;
+  let suff = "st";
+  if (4 - (2029 - currYear) + 1 === 2) {
+    suff = "nd";
+  } else if (4 - (2029 - currYear) + 1 === 3) {
+    suff = "rd";
+  } else if (4 - (2029 - currYear) + 1 === 4) {
+    suff = "th";
+  } else {
+    suff = "Completed BTech";
+  }
+
   const STATS = [
     { id: 1, value: "2", suffix: "+", label: "Live Projects" },
-    { id: 2, value: "1", suffix: "st", label: "Year BTech" },
+    {
+      id: 2,
+      value: studyYear,
+      suffix: suff,
+      label: 4 - (2029 - currYear) + 1 > 4 ? "From VIT Pune" : "Year BTech",
+    },
     { id: 3, value: "12", suffix: "+", label: "Tech Stack Items" },
     { id: 4, value: "∞", suffix: "", label: "Lines Ahead" },
   ];
@@ -124,7 +142,7 @@ const Home = () => {
 
   const CONNECT_INFO = [
     { social: "EMAIL", link: "mangnaleprathamesh@gmail.com" },
-    { social: "GITHUB", link: "https://github.com/Pratham-0x19" },
+    { social: "GITHUB", link: "https://github.com/Kernel0x19" },
     {
       social: "LINKEDIN",
       link: "https://www.linkedin.com/in/mangnale-prathamesh",
@@ -280,7 +298,7 @@ const Home = () => {
             className={`w-6 sm:w-10 h-px ${dm ? "bg-white/60" : "bg-black/60"}`}
           />
           <p className="text-xs sm:text-sm jetbrains-mono-font tracking-widest opacity-60">
-            BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2028
+            BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2029
           </p>
         </div>
 
@@ -384,10 +402,10 @@ const Home = () => {
               I
             </div>
             <p className="source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9">
-              'm a first-year B.Tech Computer Engineering student at Vishwakarma
-              Institute of Technology, Pune — driven by a deep fascination with
-              building things that live on the web. I write code that solves
-              real
+              'm a second-year B.Tech Computer Engineering (AI) student at
+              Vishwakarma Institute of Technology, Pune — driven by a deep
+              fascination with building things that live on the web. I write
+              code that solves real
             </p>
           </div>
           <p className="source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9 mb-5 md:mb-6">
