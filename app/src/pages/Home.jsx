@@ -27,25 +27,20 @@ const Home = () => {
   const { darkMode, setDarkMode } = useContext(ViewContext);
   const Nav_Links = ["ABOUT", "PROJECTS", "SKILLS", "CONTACT"];
   const currYear = new Date().getFullYear();
-  const studyYear = 4 - (2029 - currYear) + 1;
-  let suff = "st";
-  if (4 - (2029 - currYear) + 1 === 2) {
-    suff = "nd";
-  } else if (4 - (2029 - currYear) + 1 === 3) {
-    suff = "rd";
-  } else if (4 - (2029 - currYear) + 1 === 4) {
-    suff = "th";
-  } else {
-    suff = "Completed BTech";
-  }
+  const rawYear = 4 - (2029 - currYear) + 1;
+  const isGraduated = rawYear > 4;
+  const studyYear = isGraduated ? null : rawYear;
+  const yearLabels = { 1: "first", 2: "second", 3: "third", 4: "fourth" };
+  const yearOrdinals = { 1: "st", 2: "nd", 3: "rd", 4: "th" };
+  const suff = isGraduated ? "" : yearOrdinals[rawYear];
 
   const STATS = [
-    { id: 1, value: "2", suffix: "+", label: "Live Projects" },
+    { id: 1, value: "2", suffix: "+", label: "Deployed (Still Alive)" },
     {
       id: 2,
-      value: studyYear,
-      suffix: suff,
-      label: 4 - (2029 - currYear) + 1 > 4 ? "From VIT Pune" : "Year BTech",
+      value: isGraduated ? "B.Tech" : studyYear,
+      suffix: isGraduated ? "" : suff,
+      label: isGraduated ? "Grad — VIT Pune" : "Year BTech",
     },
     { id: 3, value: "12", suffix: "+", label: "Tech Stack Items" },
     { id: 4, value: "∞", suffix: "", label: "Lines Ahead" },
@@ -207,7 +202,6 @@ const Home = () => {
           MP.
         </h1>
 
-        {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-8 lg:gap-12">
           {Nav_Links.map((link) => (
             <React.Fragment key={link}>
@@ -234,7 +228,6 @@ const Home = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Dark mode toggle */}
           <button
             onClick={() => setDarkMode((prev) => !prev)}
             className={`h-9 w-9 md:h-11 md:w-11 flex items-center justify-center border-2
@@ -244,7 +237,6 @@ const Home = () => {
             {dm ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
-          {/* Mobile hamburger */}
           <button
             className="md:hidden flex flex-col gap-1.5 cursor-pointer p-1"
             onClick={() => setMenuOpen((prev) => !prev)}
@@ -321,9 +313,9 @@ const Home = () => {
         </div>
 
         <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl playfair-font-italic tracking-wide w-full md:w-[80%] lg:w-[70%] leading-tight mb-10 md:mb-12 opacity-90">
-          Full-stack engineer in the making.
+          Full-stack developer. Mostly functional.
           <br />
-          Building for the web, one commit at a time.
+          Ship first, refactor never.
         </p>
 
         <div className="flex flex-col xl:flex-row gap-4 mb-12 md:mb-14">
@@ -343,7 +335,6 @@ const Home = () => {
           </button>
         </div>
 
-        {/* Stats */}
         <div
           className={`grid grid-cols-2 md:grid-cols-4 border-t-2 ${dm ? "border-white/50" : "border-black/50"}`}
         >
@@ -402,15 +393,15 @@ const Home = () => {
               I
             </div>
             <p className="source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9">
-              'm a second-year B.Tech Computer Engineering (AI) student at
+              {`'m a ${isGraduated ? "B.Tech graduate" : `${yearLabels[rawYear]}-year B.Tech Computer Engineering (AI) student`} at
               Vishwakarma Institute of Technology, Pune — driven by a deep
               fascination with building things that live on the web. I write
-              code that solves real
+              code that solves real`}
             </p>
           </div>
           <p className="source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9 mb-5 md:mb-6">
-            problems, and I obsess over clean architecture and purposeful
-            design.
+            problems — occasionally introduces new ones — and I have strong
+            opinions about folder structure that nobody asked for.
           </p>
           <p
             className={`source-serif-font text-base md:text-xl font-semibold leading-8 md:leading-9 ${darkMode ? "text-neutral-500" : "text-neutral-600"} mb-7 md:mb-9`}
@@ -423,7 +414,7 @@ const Home = () => {
             <span
               className={`${darkMode ? "text-white" : "text-black"} playfair-font-italic font-semibold`}
             >
-              beautifully.
+              without the console errors.
             </span>
           </p>
           <div className="w-full h-0.5 bg-neutral-600" />
@@ -615,7 +606,6 @@ const Home = () => {
           </div>
 
           <div className="flex flex-col lg:flex-row items-start justify-between gap-10 lg:gap-8">
-            {/* Education card */}
             <div
               className={`w-full lg:w-auto px-6 md:px-8 py-6 md:py-7 flex flex-col gap-4 border-2 ${darkMode ? "border-white" : "border-black"} shrink-0`}
             >
@@ -632,11 +622,12 @@ const Home = () => {
               <div
                 className={`px-3 py-1 text-center text-sm font-bold jetbrains-mono-font ${darkMode ? "bg-white text-black" : "bg-black text-white"} w-fit`}
               >
-                FIRST YEAR
+                {isGraduated
+                  ? "GRADUATED"
+                  : `${yearLabels[rawYear].toUpperCase()} YEAR`}
               </div>
             </div>
 
-            {/* Activity log */}
             <div
               className={`w-full lg:flex-1 px-5 md:px-15 flex flex-col gap-5 border-l border-neutral-500`}
             >
@@ -690,7 +681,6 @@ const Home = () => {
       border-b-8 ${darkMode ? "border-black bg-white text-black" : "border-white bg-black text-white"}`}
       >
         <div className="w-full flex flex-col lg:flex-row justify-between items-start gap-12 lg:gap-20">
-          {/* Left: heading + links */}
           <div className="flex flex-col gap-4 w-full lg:w-1/2">
             <h1 className="jetbrains-mono-font">§ 005</h1>
             <div className="flex justify-between w-full mb-4 md:mb-6">
@@ -706,8 +696,9 @@ const Home = () => {
             <p
               className={`text-lg md:text-2xl playfair-font mb-7 md:mb-9 w-full lg:w-[75%] font-semibold ${darkMode ? "text-neutral-700" : "text-neutral-400"}`}
             >
-              Whether you're looking to collaborate on a project, discuss ideas,
-              or just say hi — my inbox is always open.
+              Got a project? A bug that's been haunting you? Or just want to
+              argue about tabs vs spaces? My inbox is open. Response time: not
+              guaranteed.
             </p>
             <div className="flex flex-col items-start w-full">
               {CONNECT_INFO.map((item) => (
@@ -738,7 +729,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Right: contact form */}
           <div className="flex flex-col gap-10 w-full lg:w-1/2 p-0 lg:p-5">
             <div className="flex flex-col gap-6 md:gap-8 border-t border-b border-neutral-600 py-7 md:py-8 px-0 md:px-5">
               <h1
@@ -747,7 +737,6 @@ const Home = () => {
                 SEND A MESSAGE
               </h1>
 
-              {/* Name */}
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -770,7 +759,6 @@ const Home = () => {
                 )}
               </div>
 
-              {/* Email */}
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -798,7 +786,6 @@ const Home = () => {
                 )}
               </div>
 
-              {/* Message */}
               <div className="flex flex-col gap-2">
                 <h1
                   className={`jetbrains-mono-font text-sm font-bold ${darkMode ? "text-neutral-600" : "text-neutral-400"}`}
@@ -811,7 +798,7 @@ const Home = () => {
                     setFormData({ ...formData, message: e.target.value })
                   }
                   className={`border-2 h-28 md:h-30 ${darkMode ? "border-black text-black placeholder:text-neutral-700" : "border-white text-white placeholder:text-neutral-400"} py-2 px-3 playfair-font font-bold outline-none focus:outline-none w-full`}
-                  placeholder="Tell me what you have in mind ..."
+                  placeholder="Describe your idea, bug, or existential crisis..."
                 />
                 {status === "error" && !formData.message && (
                   <p className="jetbrains-mono-font text-xs text-red-500 font-bold tracking-wider">
@@ -842,14 +829,13 @@ const Home = () => {
               ${darkMode ? "bg-black text-white hover:bg-white hover:text-black border-black" : "bg-white text-black hover:bg-black hover:text-white border-white"}
               ${status === "sending" ? "opacity-50 cursor-not-allowed" : ""}`}
               >
-                {status === "sending" ? "SENDING..." : "SEND MESSAGE →"}
+                {status === "sending" ? "DEPLOYING..." : "DEPLOY MESSAGE →"}
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ─────────────────────────────────────────────────────────────── */}
       <footer className="h-auto w-full py-5 px-5 sm:px-8 lg:px-14 xl:px-18 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0">
         <h1
           className="text-xl md:text-2xl playfair-font font-black leading-none cursor-pointer"
@@ -857,11 +843,11 @@ const Home = () => {
         >
           Mangnale Prathamesh.
         </h1>
-        {/* Centre tag: absolute on desktop, normal flow on mobile */}
+
         <p
           className={`sm:absolute sm:left-1/2 sm:-translate-x-1/2 text-xs sm:text-sm jetbrains-mono-font tracking-widest font-bold leading-none text-center ${darkMode ? "text-neutral-500" : "text-neutral-700"} cursor-pointer`}
         >
-          BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2028
+          BTECH · COMPUTER ENGINEERING (AI) · VIT PUNE · 2029
         </p>
         <p className="text-xs sm:text-sm jetbrains-mono-font tracking-widest font-bold leading-none cursor-pointer text-center sm:text-right">
           <span onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
